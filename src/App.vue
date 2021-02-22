@@ -6,7 +6,18 @@
     :isLoading="false"
     :showSearchBar="true"
     :csvFileName="csvFileName"
+    :showExpandableRow="true"
+    :singleExpand="false"
+    :fieldName="fieldName"
   >
+    <template slot="actions" slot-scope="item">
+      <v-icon medium @click="action(item.scope)">
+        mdi-dots-horizontal-circle
+      </v-icon>
+    </template>
+    <template v-slot:expandableContent>
+      Here to substitute the expandable content when needed. Turn the -showExpandableRow to true-
+    </template>
   </data-table>
 </template>
 
@@ -21,6 +32,7 @@ export default {
   data() {
     return {
       csvFileName: "Desserts",
+      fieldName:"name",
       headers: [
         {
           text: "Dessert (100g serving)",
@@ -119,5 +131,10 @@ export default {
       ],
     };
   },
+  methods: {
+    action(input) {
+      console.log(input)
+    }
+  }
 };
 </script>

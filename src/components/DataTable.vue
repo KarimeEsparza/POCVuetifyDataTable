@@ -28,13 +28,23 @@
         :items-per-page="itemsPerPage"
         :search="search"
         :loading="isLoading"
+        :item-key="fieldName"
+        :show-expand="showExpandableRow"
         multi-sort
         @current-items="currentItems"
+        :single-expand="singleExpand"
+        :expanded.sync="expanded"
       >
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon medium @click="action(item)">
-            mdi-dots-horizontal-circle
-          </v-icon>
+          <slot name="actions" :scope="item"></slot>
+        </template>
+        <template
+          v-if="showExpandableRow"
+          v-slot:expanded-item="{ headers}"
+        >
+          <td :colspan="headers.length">
+            <slot name="expandableContent"></slot>
+          </td>
         </template>
       </v-data-table>
     </v-card>
@@ -70,11 +80,24 @@ export default {
       type: String,
       required: true,
     },
+    showExpandableRow: {
+      type: Boolean,
+      required: true,
+    },
+    singleExpand: {
+      type: Boolean,
+      required: true,
+    },
+    fieldName: {
+      type: [String, Number],
+      required: true,
+    },
   },
   data() {
     return {
       search: "",
       rowsToExport: [],
+      expanded: [],
     };
   },
   components: {
