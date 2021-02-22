@@ -46,6 +46,7 @@ export default {
         { text: "Protein (g)", value: "protein" },
         { text: "Iron (%)", value: "iron" },
         { text: "Actions", value: "actions", sortable: false },
+        { text: '', value: 'data-table-expand' },
       ],
       desserts: [
         {
