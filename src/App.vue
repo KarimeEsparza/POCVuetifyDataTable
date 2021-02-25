@@ -32,7 +32,9 @@ export default {
   data() {
     return {
       csvFileName: "Desserts",
-      fieldName:"name",
+      fieldName:"name", //This field should be unique in the collection, such as an Identifier. 
+                        //It is used to expand row by row. If it's not unique, all the rows sharing this key will expand/collapse at the same time.
+                        //Only required when we'll use the expandable rows.
       headers: [
         {
           text: "Dessert (100g serving)",

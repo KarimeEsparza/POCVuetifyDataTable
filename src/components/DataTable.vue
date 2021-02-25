@@ -1,17 +1,22 @@
 <template>
   <v-app>
-    <vue-json-to-csv
-      v-show="rowsToExport.length > 0"
-      :json-data="rowsToExport"
-      :csv-title="csvFileName"
-      @success="(val) => handleSuccess(val)"
-      @error="(val) => handleError(val)"
-    >
-      <button>
-        <b>Download the CSV</b>
-      </button>
-    </vue-json-to-csv>
     <v-card>
+      <vue-json-to-csv
+        v-show="rowsToExport.length > 0"
+        :json-data="rowsToExport"
+        :csv-title="csvFileName"
+        @success="(val) => handleSuccess(val)"
+        @error="(val) => handleError(val)"
+      >
+        <v-btn>
+          <b>CSV</b>
+        </v-btn>
+      </vue-json-to-csv>
+      <v-btn
+        v-if="showExpandableRow && this.rowsToExport.length > 0"
+        @click="openCloseRows()"
+        >{{ openCloseButtonText }}</v-btn
+      >
       <v-card-title>
         <v-text-field
           v-if="showSearchBar"
@@ -34,14 +39,12 @@
         @current-items="currentItems"
         :single-expand="singleExpand"
         :expanded.sync="expanded"
+        ref="dTable"
       >
         <template v-slot:[`item.actions`]="{ item }">
           <slot name="actions" :scope="item"></slot>
         </template>
-        <template
-          v-if="showExpandableRow"
-          v-slot:expanded-item="{ headers}"
-        >
+        <template v-if="showExpandableRow" v-slot:expanded-item="{ headers }">
           <td :colspan="headers.length">
             <slot name="expandableContent"></slot>
           </td>
@@ -90,7 +93,7 @@ export default {
     },
     fieldName: {
       type: [String, Number],
-      required: true,
+      required: false,
     },
   },
   data() {
@@ -98,6 +101,8 @@ export default {
       search: "",
       rowsToExport: [],
       expanded: [],
+      openCloseButtonText: "Expand all",
+      openCloseFlag: false,
     };
   },
   components: {
@@ -112,6 +117,17 @@ export default {
     },
     handleSuccess(message) {
       console.log(message);
+    },
+    openCloseRows() {
+      if (!this.openCloseFlag) {
+        this.expanded = this.rows;
+        this.openCloseButtonText = "Collapse All";
+        this.openCloseFlag = true;
+      } else {
+        this.expanded = [];
+        this.openCloseButtonText = "Expand All";
+        this.openCloseFlag = false;
+      }
     },
   },
 };
