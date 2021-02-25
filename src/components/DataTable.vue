@@ -39,7 +39,6 @@
         @current-items="currentItems"
         :single-expand="singleExpand"
         :expanded.sync="expanded"
-        ref="dTable"
       >
         <template v-slot:[`item.actions`]="{ item }">
           <slot name="actions" :scope="item"></slot>
